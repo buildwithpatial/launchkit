@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
@@ -77,6 +78,14 @@ export default function RootLayout({
             basePath={`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/api/auth`}
           >
             <TooltipProvider>{children}</TooltipProvider>
+            <Toaster
+              position="top-center"
+              theme="system"
+              toastOptions={{
+                className:
+                  "!bg-card !text-foreground !border-border/50 !shadow-[var(--shadow-float)]",
+              }}
+            />
           </SessionProvider>
         </ThemeProvider>
       </body>

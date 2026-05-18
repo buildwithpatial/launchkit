@@ -52,7 +52,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 
   const handleDeleteAll = () => {
     setShowDeleteAllDialog(false);
-    router.replace("/");
+    router.replace("/chat");
     mutate(unstable_serialize(getChatHistoryPaginationKey), [], {
       revalidate: false,
     });
@@ -76,7 +76,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
                   className="size-8 !px-0 items-center justify-center group-data-[collapsible=icon]:group-hover/logo:opacity-0"
                   tooltip="launchkit"
                 >
-                  <Link href="/" onClick={() => setOpenMobile(false)}>
+                  <Link href="/chat" onClick={() => setOpenMobile(false)}>
                     <MessageSquareIcon className="size-4 text-sidebar-foreground/50" />
                   </Link>
                 </SidebarMenuButton>
@@ -109,7 +109,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
                     className="h-8 rounded-lg border border-sidebar-border text-[13px] text-sidebar-foreground/70 transition-colors duration-150 hover:bg-sidebar-accent/50 hover:text-sidebar-foreground"
                     onClick={() => {
                       setOpenMobile(false);
-                      router.push("/");
+                      router.push("/chat");
                     }}
                     tooltip="New Chat"
                   >

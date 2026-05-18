@@ -157,7 +157,7 @@ function PureMultimodalInput({
     setInput("");
     switch (cmd.action) {
       case "new":
-        router.push("/");
+        router.push("/chat");
         break;
       case "clear":
         setMessages(() => []);
@@ -184,7 +184,7 @@ function PureMultimodalInput({
                 `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/api/chat?id=${chatId}`,
                 { method: "DELETE" }
               );
-              router.push("/");
+              router.push("/chat");
               toast.success("Chat deleted");
             },
           },
@@ -198,7 +198,7 @@ function PureMultimodalInput({
               fetch(`${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}/api/history`, {
                 method: "DELETE",
               });
-              router.push("/");
+              router.push("/chat");
               toast.success("All chats deleted");
             },
           },

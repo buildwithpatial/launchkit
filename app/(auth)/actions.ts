@@ -37,11 +37,9 @@ export const login = async (
     if (error instanceof z.ZodError) {
       return { status: "invalid_data" };
     }
-
     if (error instanceof AuthError) {
       return { status: "failed" };
     }
-
     throw error;
   }
 };
@@ -83,11 +81,9 @@ export const register = async (
     if (error instanceof z.ZodError) {
       return { status: "invalid_data" };
     }
-
     if (error instanceof AuthError) {
       return { status: "failed" };
     }
-
     throw error;
   }
 };
