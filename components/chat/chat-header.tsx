@@ -1,6 +1,7 @@
 "use client";
 
-import { PanelLeftIcon } from "lucide-react";
+import { PanelLeftIcon, XIcon } from "lucide-react";
+import Link from "next/link";
 import { memo } from "react";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
@@ -38,6 +39,12 @@ function PureChatHeader({
           selectedVisibilityType={selectedVisibilityType}
         />
       )}
+
+      <Button asChild className="ml-auto" size="icon-sm" variant="ghost">
+        <Link aria-label="Back to home" href="/">
+          <XIcon className="size-4" />
+        </Link>
+      </Button>
     </header>
   );
 }

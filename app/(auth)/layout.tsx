@@ -1,4 +1,4 @@
-import { ArrowLeftIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
 import Link from "next/link";
 import { SparklesIcon } from "@/components/chat/icons";
 
@@ -8,13 +8,13 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-dvh w-full flex-col bg-background p-8 md:p-16">
+    <div className="relative flex min-h-dvh w-full flex-col bg-background p-8 md:p-16">
       <Link
-        className="flex w-fit items-center gap-1.5 text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+        aria-label="Close"
+        className="absolute right-4 top-4 inline-flex size-9 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:right-6 md:top-6"
         href="/"
       >
-        <ArrowLeftIcon className="size-3.5" />
-        Back
+        <XIcon className="size-4" />
       </Link>
       <div className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center gap-10">
         <div className="flex flex-col gap-2">
