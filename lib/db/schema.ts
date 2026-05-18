@@ -2,6 +2,7 @@ import type { InferSelectModel } from "drizzle-orm";
 import {
   boolean,
   foreignKey,
+  integer,
   json,
   pgTable,
   primaryKey,
@@ -134,3 +135,25 @@ export const stream = pgTable(
 );
 
 export type Stream = InferSelectModel<typeof stream>;
+
+export const payment = pgTable("Payment", {
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
+  userId: uuid("userId")
+    .notNull()
+    .references(() => user.id),
+  razorpayOrderId: varchar("razorpayOrderId", { length: 64 }).notNull().unique(),
+  razorpayPaymentId: varchar("razorpayPaymentId", { length: 64 }),
+  amount: integer("amount").notNull(),
+  currency: varchar("currency", { length: 8 }).notNull().default("INR"),
+  status: varchar("status", {
+    enum: ["created", "paid", "failed"],
+  })
+    .notNull()
+    .default("created"),
+  productId: varchar("productId", { length: 64 }).notNull(),
+  notes: json("notes"),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
+export type Payment = InferSelectModel<typeof payment>;

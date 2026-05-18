@@ -24,6 +24,8 @@ import {
   type DBMessage,
   document,
   message,
+  payment,
+  type Payment,
   type Suggestion,
   stream,
   suggestion,
@@ -654,6 +656,85 @@ export async function getStreamIdsByChatId({ chatId }: { chatId: string }) {
     throw new ChatbotError(
       "bad_request:database",
       "Failed to get stream ids by chat id"
+    );
+  }
+}
+
+export async function createPayment({
+  userId,
+  razorpayOrderId,
+  amount,
+  currency,
+  productId,
+  notes,
+}: {
+  userId: string;
+  razorpayOrderId: string;
+  amount: number;
+  currency: string;
+  productId: string;
+  notes?: Record<string, unknown>;
+}): Promise<Payment> {
+  try {
+    const [row] = await db
+      .insert(payment)
+      .values({
+        userId,
+        razorpayOrderId,
+        amount,
+        currency,
+        productId,
+        notes: notes ?? null,
+      })
+      .returning();
+    return row;
+  } catch (_error) {
+    throw new ChatbotError(
+      "bad_request:database",
+      "Failed to create payment"
+    );
+  }
+}
+
+export async function getPaymentByOrderId(
+  razorpayOrderId: string
+): Promise<Payment | undefined> {
+  try {
+    const [row] = await db
+      .select()
+      .from(payment)
+      .where(eq(payment.razorpayOrderId, razorpayOrderId));
+    return row;
+  } catch (_error) {
+    throw new ChatbotError(
+      "bad_request:database",
+      "Failed to get payment by order id"
+    );
+  }
+}
+
+export async function updatePaymentStatus({
+  razorpayOrderId,
+  status,
+  razorpayPaymentId,
+}: {
+  razorpayOrderId: string;
+  status: "paid" | "failed";
+  razorpayPaymentId?: string;
+}) {
+  try {
+    await db
+      .update(payment)
+      .set({
+        status,
+        razorpayPaymentId: razorpayPaymentId ?? null,
+        updatedAt: new Date(),
+      })
+      .where(eq(payment.razorpayOrderId, razorpayOrderId));
+  } catch (_error) {
+    throw new ChatbotError(
+      "bad_request:database",
+      "Failed to update payment status"
     );
   }
 }

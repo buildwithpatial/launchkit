@@ -5,6 +5,7 @@ import {
   HomeNavAuthFallback,
 } from "@/components/launchkit/home-nav-auth";
 import { ImageDemo } from "@/components/launchkit/image-demo";
+import { PaymentDemo } from "@/components/launchkit/payment-demo";
 import { TextDemo } from "@/components/launchkit/text-demo";
 import { Button } from "@/components/ui/button";
 
@@ -20,6 +21,13 @@ const demos = [
     description: "Generate images with `ai.generateImage`. Returns a hosted URL.",
     snippet: `const { url } = await ai.generateImage({\n  prompt: "A neon sign reading launchkit",\n  aspectRatio: "1:1",\n});`,
     body: <ImageDemo />,
+  },
+  {
+    title: "Payment",
+    description:
+      "Razorpay one-time checkout. Creates an order, opens the modal, verifies signature, persists to DB.",
+    snippet: `const res = await fetch("/api/payments/order", { method: "POST" });\nconst { orderId, amount, keyId } = await res.json();\nnew window.Razorpay({ key: keyId, order_id: orderId, amount, ... }).open();`,
+    body: <PaymentDemo />,
   },
 ];
 
