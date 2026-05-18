@@ -1,9 +1,11 @@
 import { compare } from "bcrypt-ts";
 import NextAuth, { type DefaultSession } from "next-auth";
 import type { DefaultJWT } from "next-auth/jwt";
+import Apple from "next-auth/providers/apple";
 import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 import { DUMMY_PASSWORD } from "@/lib/constants";
-import { createGuestUser, getUser } from "@/lib/db/queries";
+import { createGuestUser, createOAuthUser, getUser } from "@/lib/db/queries";
 import { authConfig } from "./auth.config";
 
 export type UserType = "guest" | "regular";
@@ -38,6 +40,12 @@ export const {
 } = NextAuth({
   ...authConfig,
   providers: [
+    Google({
+      allowDangerousEmailAccountLinking: true,
+    }),
+    Apple({
+      allowDangerousEmailAccountLinking: true,
+    }),
     Credentials({
       credentials: {
         email: { label: "Email", type: "email" },
@@ -79,8 +87,30 @@ export const {
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user, account, profile }) {
       if (user) {
+        if (account?.provider === "google" || account?.provider === "apple") {
+          const email = user.email ?? profile?.email ?? null;
+          if (!email) {
+            return token;
+          }
+
+          const existing = await getUser(email);
+          const dbUser =
+            existing[0] ??
+            (
+              await createOAuthUser({
+                email,
+                name: user.name ?? profile?.name ?? null,
+                image: user.image ?? null,
+              })
+            )[0];
+
+          token.id = dbUser.id;
+          token.type = "regular";
+          return token;
+        }
+
         token.id = user.id as string;
         token.type = user.type;
       }
