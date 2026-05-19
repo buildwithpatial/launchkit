@@ -4,7 +4,7 @@ An opinionated Next.js 16 starter — auth, payments, and a typed AI client out 
 
 ## What's in it
 
-- **Auth** — NextAuth v5 with Credentials, Google, Apple, and guest sessions. Postgres-backed via Drizzle.
+- **Auth** — NextAuth v5 with Credentials, Google, and guest sessions. Postgres-backed via Drizzle.
 - **Payments** — Razorpay one-time checkout with HMAC signature verification + webhook safety net.
 - **AI** — A typed `ai` client (`lib/launchkit/ai.ts`) wrapping `@ai-sdk/google` for `streamText` / `generateImage`. Defaults to Gemini.
 - **Chat** — Full chat UI at `/chat` (model picker, history, attachments, artifacts) — keep it or delete it.
@@ -44,7 +44,6 @@ Your app is at [localhost:3000](http://localhost:3000).
 | `BLOB_READ_WRITE_TOKEN` | File uploads in chat (images, PDFs as attachments) | https://vercel.com/docs/vercel-blob |
 | `REDIS_URL` | Per-IP rate limiting on AI endpoints | https://vercel.com/docs/redis |
 | `AUTH_GOOGLE_ID` / `_SECRET` | "Sign in with Google" button on login/register | https://console.cloud.google.com/apis/credentials |
-| `AUTH_APPLE_ID` / `_SECRET` | "Sign in with Apple" button (skip until you have a public domain) | https://developer.apple.com/account/resources/identifiers — JWT, see https://authjs.dev/getting-started/providers/apple |
 | `RAZORPAY_KEY_ID` / `_SECRET` | Server-side order creation + signature verification | https://dashboard.razorpay.com (test mode for development) |
 | `NEXT_PUBLIC_RAZORPAY_KEY_ID` | Client-side checkout modal (same value as `RAZORPAY_KEY_ID`) | (copy from above) |
 | `RAZORPAY_WEBHOOK_SECRET` | Webhook signature verification (production safety net — set up after deploy) | https://dashboard.razorpay.com/app/webhooks |

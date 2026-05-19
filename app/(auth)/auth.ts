@@ -1,7 +1,6 @@
 import { compare } from "bcrypt-ts";
 import NextAuth, { type DefaultSession } from "next-auth";
 import type { DefaultJWT } from "next-auth/jwt";
-import Apple from "next-auth/providers/apple";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { DUMMY_PASSWORD } from "@/lib/constants";
@@ -41,9 +40,6 @@ export const {
   ...authConfig,
   providers: [
     Google({
-      allowDangerousEmailAccountLinking: true,
-    }),
-    Apple({
       allowDangerousEmailAccountLinking: true,
     }),
     Credentials({
@@ -89,7 +85,7 @@ export const {
   callbacks: {
     async jwt({ token, user, account, profile }) {
       if (user) {
-        if (account?.provider === "google" || account?.provider === "apple") {
+        if (account?.provider === "google") {
           const email = user.email ?? profile?.email ?? null;
           if (!email) {
             return token;
