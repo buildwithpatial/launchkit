@@ -1,8 +1,7 @@
+import { google } from "@ai-sdk/google";
 import { put } from "@vercel/blob";
 import { ipAddress } from "@vercel/functions";
-import { google } from "@ai-sdk/google";
 import { generateImage } from "ai";
-import { generateUUID } from "@/lib/utils";
 import { z } from "zod";
 import { auth, type UserType } from "@/app/(auth)/auth";
 import { entitlementsByUserType } from "@/lib/ai/entitlements";
@@ -10,14 +9,13 @@ import { imageModel } from "@/lib/ai/models";
 import { getMessageCountByUserId } from "@/lib/db/queries";
 import { ChatbotError } from "@/lib/errors";
 import { checkIpRateLimit } from "@/lib/ratelimit";
+import { generateUUID } from "@/lib/utils";
 
 export const maxDuration = 60;
 
 const bodySchema = z.object({
   prompt: z.string().min(1).max(4000),
-  aspectRatio: z
-    .enum(["1:1", "3:4", "4:3", "9:16", "16:9"])
-    .optional(),
+  aspectRatio: z.enum(["1:1", "3:4", "4:3", "9:16", "16:9"]).optional(),
 });
 
 export async function POST(request: Request) {

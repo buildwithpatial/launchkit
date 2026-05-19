@@ -24,8 +24,8 @@ import {
   type DBMessage,
   document,
   message,
-  payment,
   type Payment,
+  payment,
   type Suggestion,
   stream,
   suggestion,
@@ -689,10 +689,7 @@ export async function createPayment({
       .returning();
     return row;
   } catch (_error) {
-    throw new ChatbotError(
-      "bad_request:database",
-      "Failed to create payment"
-    );
+    throw new ChatbotError("bad_request:database", "Failed to create payment");
   }
 }
 

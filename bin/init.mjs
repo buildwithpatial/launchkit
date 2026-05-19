@@ -7,25 +7,69 @@ import { randomBytes } from "node:crypto";
 import { existsSync } from "node:fs";
 import { readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { createInterface } from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
+import { createInterface } from "node:readline/promises";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 process.chdir(root);
 
 const REPLACEMENTS = [
-  { file: "package.json", from: '"name": "launchkit"', to: '"name": "{{name}}"' },
-  { file: "app/layout.tsx", from: 'title: "launchkit"', to: 'title: "{{name}}"' },
-  { file: "app/page.tsx", from: ">\n          launchkit\n        </Link>", to: ">\n          {{name}}\n        </Link>" },
-  { file: "app/page.tsx", from: '<h1 className="text-4xl font-semibold tracking-tight">launchkit</h1>', to: '<h1 className="text-4xl font-semibold tracking-tight">{{name}}</h1>' },
-  { file: "app/page.tsx", from: '"A neon sign reading launchkit"', to: '"A neon sign reading {{name}}"' },
-  { file: "components/chat/app-sidebar.tsx", from: 'tooltip="launchkit"', to: 'tooltip="{{name}}"' },
-  { file: "components/chat/preview.tsx", from: ">launchkit</span>", to: ">{{name}}</span>" },
-  { file: "components/launchkit/payment-demo.tsx", from: 'name: "launchkit"', to: 'name: "{{name}}"' },
-  { file: "components/launchkit/image-demo.tsx", from: "'launchkit'", to: "'{{name}}'" },
-  { file: "lib/razorpay.ts", from: 'id: "launchkit_demo"', to: 'id: "{{name}}_demo"' },
-  { file: "lib/razorpay.ts", from: 'description: "Launchkit demo payment"', to: 'description: "{{name}} demo payment"' },
+  {
+    file: "package.json",
+    from: '"name": "launchkit"',
+    to: '"name": "{{name}}"',
+  },
+  {
+    file: "app/layout.tsx",
+    from: 'title: "launchkit"',
+    to: 'title: "{{name}}"',
+  },
+  {
+    file: "app/page.tsx",
+    from: ">\n          launchkit\n        </Link>",
+    to: ">\n          {{name}}\n        </Link>",
+  },
+  {
+    file: "app/page.tsx",
+    from: '<h1 className="text-4xl font-semibold tracking-tight">launchkit</h1>',
+    to: '<h1 className="text-4xl font-semibold tracking-tight">{{name}}</h1>',
+  },
+  {
+    file: "app/page.tsx",
+    from: '"A neon sign reading launchkit"',
+    to: '"A neon sign reading {{name}}"',
+  },
+  {
+    file: "components/chat/app-sidebar.tsx",
+    from: 'tooltip="launchkit"',
+    to: 'tooltip="{{name}}"',
+  },
+  {
+    file: "components/chat/preview.tsx",
+    from: ">launchkit</span>",
+    to: ">{{name}}</span>",
+  },
+  {
+    file: "components/launchkit/payment-demo.tsx",
+    from: 'name: "launchkit"',
+    to: 'name: "{{name}}"',
+  },
+  {
+    file: "components/launchkit/image-demo.tsx",
+    from: "'launchkit'",
+    to: "'{{name}}'",
+  },
+  {
+    file: "lib/razorpay.ts",
+    from: 'id: "launchkit_demo"',
+    to: 'id: "{{name}}_demo"',
+  },
+  {
+    file: "lib/razorpay.ts",
+    from: 'description: "Launchkit demo payment"',
+    to: 'description: "{{name}} demo payment"',
+  },
 ];
 
 function isValidName(name) {
@@ -57,7 +101,7 @@ async function applyReplacement({ file, from, to }, name) {
   await writeFile(file, original.replaceAll(from, target));
 }
 
-async function writeEnvLocal(name) {
+async function writeEnvLocal() {
   if (existsSync(".env.local")) {
     console.log("• .env.local already exists, leaving it alone.");
     return;
@@ -68,13 +112,15 @@ async function writeEnvLocal(name) {
   await writeFile(".env.local", filled);
 }
 
-async function gitCommit(name) {
+function gitCommit(name) {
   if (!existsSync(".git")) {
     return false;
   }
   try {
     execSync("git add .", { stdio: "ignore" });
-    execSync(`git commit -m "Initialize ${name} from launchkit"`, { stdio: "ignore" });
+    execSync(`git commit -m "Initialize ${name} from launchkit"`, {
+      stdio: "ignore",
+    });
     return true;
   } catch {
     return false;
@@ -92,7 +138,9 @@ async function main() {
     if (isValidName(answer)) {
       name = answer;
     } else {
-      console.log("  → must be lowercase, start with a letter, hyphens ok, max 39 chars");
+      console.log(
+        "  → must be lowercase, start with a letter, hyphens ok, max 39 chars"
+      );
     }
   }
   rl.close();
@@ -103,7 +151,7 @@ async function main() {
   }
   console.log(`✓ Renamed launchkit → ${name} in ${REPLACEMENTS.length} spots`);
 
-  await writeEnvLocal(name);
+  await writeEnvLocal();
   console.log("✓ Wrote .env.local with AUTH_SECRET (8 vars still need values)");
 
   await rm("bin/init.mjs");
@@ -114,7 +162,7 @@ async function main() {
   }
   console.log("✓ Removed bin/init.mjs");
 
-  const committed = await gitCommit(name);
+  const committed = gitCommit(name);
   if (committed) {
     console.log(`✓ git commit "Initialize ${name} from launchkit"`);
   }

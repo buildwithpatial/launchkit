@@ -141,7 +141,9 @@ export const payment = pgTable("Payment", {
   userId: uuid("userId")
     .notNull()
     .references(() => user.id),
-  razorpayOrderId: varchar("razorpayOrderId", { length: 64 }).notNull().unique(),
+  razorpayOrderId: varchar("razorpayOrderId", { length: 64 })
+    .notNull()
+    .unique(),
   razorpayPaymentId: varchar("razorpayPaymentId", { length: 64 }),
   amount: integer("amount").notNull(),
   currency: varchar("currency", { length: 8 }).notNull().default("INR"),
