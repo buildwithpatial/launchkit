@@ -123,7 +123,7 @@ async function main() {
 ${name} is ready.
 
 Next:
-  1. Fill in .env.local (POSTGRES_URL, AI_GATEWAY_API_KEY, REDIS_URL,
+  1. Fill in .env.local (POSTGRES_URL, GOOGLE_GENERATIVE_AI_API_KEY, REDIS_URL,
      BLOB_READ_WRITE_TOKEN, AUTH_GOOGLE_ID/SECRET, RAZORPAY_KEY_ID/SECRET).
   2. pnpm install        (if you haven't yet)
   3. pnpm db:migrate     (after POSTGRES_URL is set)
