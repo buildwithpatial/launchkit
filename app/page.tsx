@@ -30,6 +30,17 @@ const demos = [
     snippet: `const res = await fetch("/api/payments/order", { method: "POST" });\nconst { orderId, amount, keyId } = await res.json();\nnew window.Razorpay({ key: keyId, order_id: orderId, amount, ... }).open();`,
     body: <PaymentDemo />,
   },
+  {
+    title: "Chat",
+    description:
+      "Full chat surface — model picker, history, attachments, artifacts. Sessions persist for signed-in users; guests get a throwaway session.",
+    snippet: `// Lives at /chat — uses the same providers under the hood.\nimport { getLanguageModel } from "@/lib/ai/providers";`,
+    body: (
+      <Button asChild className="self-start" size="sm">
+        <Link href="/chat">Open chat →</Link>
+      </Button>
+    ),
+  },
 ];
 
 export default function Page() {
@@ -73,23 +84,6 @@ export default function Page() {
             {demo.body}
           </article>
         ))}
-
-        <article className="flex min-w-0 flex-col gap-4 rounded-2xl border border-border/50 bg-card p-6 lg:col-span-2">
-          <div className="flex flex-col gap-1">
-            <h2 className="text-lg font-medium">Chat</h2>
-            <p className="text-sm text-muted-foreground">
-              The full chat surface — model picker, history, attachments,
-              artifacts. Sessions persist for signed-in users; guests get a
-              throwaway session.
-            </p>
-          </div>
-          <pre className="overflow-x-auto rounded-lg border border-border/50 bg-muted/40 p-3 text-xs leading-relaxed">
-            {`// Lives at /chat — uses the same providers under the hood.\nimport { getLanguageModel } from "@/lib/ai/providers";`}
-          </pre>
-          <Button asChild className="self-start" size="sm">
-            <Link href="/chat">Open chat →</Link>
-          </Button>
-        </article>
       </section>
     </div>
   );
