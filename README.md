@@ -39,7 +39,7 @@ Your app is at [localhost:3000](http://localhost:3000).
 
 | Var | Used for | Where to get it |
 |---|---|---|
-| `POSTGRES_URL` | User accounts, chat history, payments — everything DB-backed | https://neon.tech (free tier) |
+| `POSTGRES_URL` | User accounts, chat history, payments — everything DB-backed | https://vercel.com/docs/postgres (provisions a Neon database) |
 | `GOOGLE_GENERATIVE_AI_API_KEY` | Chat, text demo, image demo (Gemini) | https://aistudio.google.com/apikey |
 | `BLOB_READ_WRITE_TOKEN` | File uploads in chat (images, PDFs as attachments) | https://vercel.com/docs/vercel-blob |
 | `REDIS_URL` | Per-IP rate limiting on AI endpoints | https://vercel.com/docs/redis |
