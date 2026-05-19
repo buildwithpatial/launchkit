@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { ai, LaunchkitAIError } from "@/lib/launchkit/ai";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -12,6 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { ai, LaunchkitAIError } from "@/lib/launchkit/ai";
 
 const ASPECT_RATIOS = ["1:1", "3:4", "4:3", "9:16", "16:9"] as const;
 type AspectRatio = (typeof ASPECT_RATIOS)[number];
@@ -26,7 +26,9 @@ export function ImageDemo() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleGenerate = async () => {
-    if (!prompt.trim() || isLoading) return;
+    if (!prompt.trim() || isLoading) {
+      return;
+    }
     setIsLoading(true);
     setError(null);
     setImageUrl(null);
@@ -34,7 +36,9 @@ export function ImageDemo() {
       const { url } = await ai.generateImage({ prompt, aspectRatio });
       setImageUrl(url);
     } catch (e) {
-      setError(e instanceof LaunchkitAIError ? e.message : "Something went wrong");
+      setError(
+        e instanceof LaunchkitAIError ? e.message : "Something went wrong"
+      );
     } finally {
       setIsLoading(false);
     }

@@ -54,15 +54,17 @@ export class LaunchkitAIError extends Error {
 }
 
 export class LaunchkitAI {
-  private baseUrl: string;
-  private fetchImpl: typeof fetch;
+  private readonly baseUrl: string;
+  private readonly fetchImpl: typeof fetch;
 
   constructor(options: LaunchkitAIOptions = {}) {
     this.baseUrl = options.baseUrl ?? "";
     this.fetchImpl = options.fetch ?? fetch;
   }
 
-  async generateText(options: GenerateTextOptions): Promise<GenerateTextResult> {
+  async generateText(
+    options: GenerateTextOptions
+  ): Promise<GenerateTextResult> {
     const response = await this.fetchImpl(`${this.baseUrl}/api/ai/text`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -82,17 +84,20 @@ export class LaunchkitAI {
   }
 
   async *streamText(options: GenerateTextOptions): AsyncIterable<string> {
-    const response = await this.fetchImpl(`${this.baseUrl}/api/ai/text/stream`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        prompt: options.prompt,
-        system: options.system,
-        images: options.images,
-      }),
-      signal: options.signal,
-      credentials: "include",
-    });
+    const response = await this.fetchImpl(
+      `${this.baseUrl}/api/ai/text/stream`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt: options.prompt,
+          system: options.system,
+          images: options.images,
+        }),
+        signal: options.signal,
+        credentials: "include",
+      }
+    );
 
     if (!response.ok) {
       throw await this.toError(response);
@@ -147,7 +152,10 @@ export class LaunchkitAI {
     let message = response.statusText;
     let code: string | undefined;
     try {
-      const data = (await response.json()) as { message?: string; code?: string };
+      const data = (await response.json()) as {
+        message?: string;
+        code?: string;
+      };
       if (data.message) {
         message = data.message;
       }

@@ -18,7 +18,8 @@ const demos = [
   },
   {
     title: "Image",
-    description: "Generate images with `ai.generateImage`. Returns a hosted URL.",
+    description:
+      "Generate images with `ai.generateImage`. Returns a hosted URL.",
     snippet: `const { url } = await ai.generateImage({\n  prompt: "A neon sign reading launchkit",\n  aspectRatio: "1:1",\n});`,
     body: <ImageDemo />,
   },
@@ -28,6 +29,17 @@ const demos = [
       "Razorpay one-time checkout. Creates an order, opens the modal, verifies signature, persists to DB.",
     snippet: `const res = await fetch("/api/payments/order", { method: "POST" });\nconst { orderId, amount, keyId } = await res.json();\nnew window.Razorpay({ key: keyId, order_id: orderId, amount, ... }).open();`,
     body: <PaymentDemo />,
+  },
+  {
+    title: "Chat",
+    description:
+      "Full chat surface — model picker, history, attachments, artifacts. Sessions persist for signed-in users; guests get a throwaway session.",
+    snippet: `// Lives at /chat — uses the same providers under the hood.\nimport { getLanguageModel } from "@/lib/ai/providers";`,
+    body: (
+      <Button asChild className="self-start" size="sm">
+        <Link href="/chat">Open chat →</Link>
+      </Button>
+    ),
   },
 ];
 
@@ -49,8 +61,8 @@ export default function Page() {
         <h1 className="text-4xl font-semibold tracking-tight">launchkit</h1>
         <p className="max-w-2xl text-muted-foreground">
           A reusable Next.js starter with auth, guest mode, payments, and a
-          typed AI client. Below: live examples calling the same endpoints
-          your downstream apps will hit.
+          typed AI client. Below: live examples calling the same endpoints your
+          downstream apps will hit.
         </p>
       </header>
 
@@ -62,7 +74,9 @@ export default function Page() {
           >
             <div className="flex flex-col gap-1">
               <h2 className="text-lg font-medium">{demo.title}</h2>
-              <p className="text-sm text-muted-foreground">{demo.description}</p>
+              <p className="text-sm text-muted-foreground">
+                {demo.description}
+              </p>
             </div>
             <pre className="overflow-x-auto rounded-lg border border-border/50 bg-muted/40 p-3 text-xs leading-relaxed">
               {demo.snippet}
@@ -70,23 +84,6 @@ export default function Page() {
             {demo.body}
           </article>
         ))}
-
-        <article className="flex min-w-0 flex-col gap-4 rounded-2xl border border-border/50 bg-card p-6 lg:col-span-2">
-          <div className="flex flex-col gap-1">
-            <h2 className="text-lg font-medium">Chat</h2>
-            <p className="text-sm text-muted-foreground">
-              The full chat surface — model picker, history, attachments,
-              artifacts. Sessions persist for signed-in users; guests get a
-              throwaway session.
-            </p>
-          </div>
-          <pre className="overflow-x-auto rounded-lg border border-border/50 bg-muted/40 p-3 text-xs leading-relaxed">
-            {`// Lives at /chat — uses the same providers under the hood.\nimport { getLanguageModel } from "@/lib/ai/providers";`}
-          </pre>
-          <Button asChild className="self-start" size="sm">
-            <Link href="/chat">Open chat →</Link>
-          </Button>
-        </article>
       </section>
     </div>
   );

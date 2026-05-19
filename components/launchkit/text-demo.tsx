@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ai, LaunchkitAIError } from "@/lib/launchkit/ai";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { ai, LaunchkitAIError } from "@/lib/launchkit/ai";
 
 export function TextDemo() {
   const [prompt, setPrompt] = useState("Write a haiku about lazy cats.");
@@ -12,7 +12,9 @@ export function TextDemo() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleGenerate = async () => {
-    if (!prompt.trim() || isLoading) return;
+    if (!prompt.trim() || isLoading) {
+      return;
+    }
     setIsLoading(true);
     setError(null);
     setOutput("");
@@ -23,7 +25,9 @@ export function TextDemo() {
         setOutput(buffer);
       }
     } catch (e) {
-      setError(e instanceof LaunchkitAIError ? e.message : "Something went wrong");
+      setError(
+        e instanceof LaunchkitAIError ? e.message : "Something went wrong"
+      );
     } finally {
       setIsLoading(false);
     }
@@ -45,9 +49,7 @@ export function TextDemo() {
       >
         {isLoading ? "Generating..." : "Generate"}
       </Button>
-      {error && (
-        <p className="text-sm text-destructive">{error}</p>
-      )}
+      {error && <p className="text-sm text-destructive">{error}</p>}
       {output && (
         <pre className="whitespace-pre-wrap rounded-lg border border-border/50 bg-muted/30 p-3 text-sm">
           {output}

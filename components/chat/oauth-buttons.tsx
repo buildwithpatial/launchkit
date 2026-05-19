@@ -2,7 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import { Button } from "../ui/button";
-import { LogoApple, LogoGoogle } from "./icons";
+import { LogoGoogle } from "./icons";
 
 export function OAuthButtons({ callbackUrl = "/" }: { callbackUrl?: string }) {
   return (
@@ -16,15 +16,6 @@ export function OAuthButtons({ callbackUrl = "/" }: { callbackUrl?: string }) {
         >
           <LogoGoogle size={16} />
           Continue with Google
-        </Button>
-        <Button
-          className="h-10 w-full justify-center gap-2 rounded-lg"
-          onClick={() => signIn("apple", { callbackUrl })}
-          type="button"
-          variant="outline"
-        >
-          <LogoApple size={16} />
-          Continue with Apple
         </Button>
       </div>
 
