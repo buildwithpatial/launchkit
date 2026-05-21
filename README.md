@@ -8,6 +8,7 @@ An opinionated Next.js 16 starter — auth, payments, and a typed AI client out 
 - **Payments** — Razorpay one-time checkout with HMAC signature verification + webhook safety net.
 - **AI** — A typed `ai` client (`lib/launchkit/ai.ts`) wrapping `@ai-sdk/google` for `streamText` / `generateImage`. Defaults to Gemini.
 - **Chat** — Full chat UI at `/chat` (model picker, history, attachments, artifacts) — keep it or delete it.
+- **Analytics** — Vercel Web Analytics + Speed Insights mounted in the root layout. Auto-collects on Vercel deploys, no-ops elsewhere; no env vars to set.
 - **Demo home** — Live tiles on `/` showing each capability calling its own API route.
 
 Locked stack: Next.js 16 + React 19 + Postgres (Neon) + Redis + Vercel Blob + Razorpay. No feature toggles — everything ships dormant by default; you wire in what you need.
